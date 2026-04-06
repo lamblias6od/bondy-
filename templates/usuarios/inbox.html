@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Mensajes{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Mensajes</h2>
+
+{% if conversations %}
+    <div class="card p-0" style="overflow: hidden;">
+        {% for conv in conversations %}
+        <a href="{% url 'conversation' conv.msg.sender.id %}" class="text-decoration-none">
+            <div class="d-flex align-items-center p-3" style="border-bottom: 1px solid #222222; transition: background 0.2s;" onmouseover="this.style.background='#1a1a1a'" onmouseout="this.style.background='transparent'">
+                {% if conv.msg.sender.profile.photo %}
+                    <img src="{{ conv.msg.sender.profile.photo.url }}" class="rounded-circle me-3" width="50" height="50" style="object-fit: cover; border: 2px solid #a855f7;">
+                {% else %}
+                    <div class="rounded-circle me-3 d-flex align-items-center justify-content-center" style="width:50px;height:50px;background: linear-gradient(135deg, #eab308, #f59e0b); flex-shrink:0;">
+                        <span class="text-white fw-bold">{{ conv.msg.sender.username|first|upper }}</span>
+                    </div>
+                {% endif %}
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="mb-0" style="color: #ffffff;">{{ conv.msg.sender.username }}</h6>
+                        <small class="text-muted">{{ conv.msg.created_at|date:"d/m H:i" }}</small>
+                    </div>
+                    <p class="mb-0 text-muted small">{{ conv.msg.content|truncatechars:50 }}</p>
+                </div>
+                {% if conv.unread %}
+                    <span class="badge ms-3" style="background: linear-gradient(135deg, #eab308, #f59e0b);">{{ conv.unread }}</span>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center mt-5">
+        <i class="fas fa-comment text-muted" style="font-size: 48px;"></i>
+        <p class="text-muted mt-3">No tienes mensajes todavía.</p>
+    </div>
+{% endif %}
+{% endblock %}

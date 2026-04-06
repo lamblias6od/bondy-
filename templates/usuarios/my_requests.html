@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Mis Solicitudes{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Mis Solicitudes</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h5 class="mb-3" style="color: #cc6d0f;">Recibidas</h5>
+        {% if received %}
+            {% for req in received %}
+            <div class="card mb-3 p-3">
+                <div class="d-flex align-items-center mb-2">
+                    {% if req.sender.profile.photo %}
+                        <img src="{{ req.sender.profile.photo.url }}" class="rounded-circle me-2" width="40" height="40" style="object-fit: cover; border: 2px solid #a855f7;">
+                    {% else %}
+                        <div class="rounded-circle me-2 d-flex align-items-center justify-content-center" style="width:40px;height:40px;background: linear-gradient(135deg, #eab308, #f59e0b);">
+                            <span class="text-white fw-bold small">{{ req.sender.username|first|upper }}</span>
+                        </div>
+                    {% endif %}
+                    <h6 class="mb-0">{{ req.sender.username }}</h6>
+                </div>
+                <p class="mb-1">📍 {{ req.proposed_place }}</p>
+                <p class="mb-1">📅 {{ req.proposed_date }} a las {{ req.proposed_time }}</p>
+                {% if req.message %}
+                    <p class="mb-2 text-muted small">💬 {{ req.message }}</p>
+                {% endif %}
+                <div class="d-flex gap-2 mt-2">
+                    <a href="{% url 'accept_request' req.id %}" class="btn btn-success btn-sm">Aceptar</a>
+                    <a href="{% url 'reject_request' req.id %}" class="btn btn-danger btn-sm">Rechazar</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center mt-3">
+                <p class="text-muted">No tienes solicitudes pendientes.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-6">
+        <h5 class="mb-3" style="color: #cc6d0f;">Enviadas</h5>
+        {% if sent %}
+            {% for req in sent %}
+            <div class="card mb-3 p-3">
+                <div class="d-flex align-items-center mb-2">
+                    {% if req.receiver.profile.photo %}
+                        <img src="{{ req.receiver.profile.photo.url }}" class="rounded-circle me-2" width="40" height="40" style="object-fit: cover; border: 2px solid #ec4899;">
+                    {% else %}
+                        <div class="rounded-circle me-2 d-flex align-items-center justify-content-center" style="width:40px;height:40px;background: linear-gradient(135deg, #eab308, #f59e0b);">
+                            <span class="text-white fw-bold small">{{ req.receiver.username|first|upper }}</span>
+                        </div>
+                    {% endif %}
+                    <h6 class="mb-0">Para: {{ req.receiver.username }}</h6>
+                </div>
+                <p class="mb-1">📍 {{ req.proposed_place }}</p>
+                <p class="mb-1">📅 {{ req.proposed_date }} a las {{ req.proposed_time }}</p>
+                <span class="badge mt-1 {% if req.status == 'accepted' %}bg-success{% elif req.status == 'rejected' %}bg-danger{% else %}bg-secondary{% endif %}">
+                    {{ req.status }}
+                </span>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center mt-3">
+                <p class="text-muted">No has enviado ninguna solicitud.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

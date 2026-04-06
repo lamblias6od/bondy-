@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  datesDB:
+    image: postgres:15.3
+    container_name: dates-database
+    restart: always
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=dave
+      - POSTGRES_PASSWORD=dave
+      - POSTGRES_DB=dates_db
+    volumes:
+      - ./postgres:/var/lib/postgresql/data

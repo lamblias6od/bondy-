@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Salidas{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2>Salidas cerca de ti</h2>
+    <p class="text-muted">Descubre planes y conecta con gente de tu ciudad</p>
+</div>
+
+<form method="get" class="mb-4">
+    <div class="row g-3">
+        <div class="col-md-5">
+            <input type="text" name="city" class="form-control" placeholder="Buscar por ciudad..." value="{{ search_city }}">
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="date" class="form-control" value="{{ search_date }}">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-search w-100">Buscar</button>
+        </div>
+        <div class="col-md-2">
+            <a href="{% url 'outings_list' %}" class="btn btn-clear w-100">Limpiar</a>
+        </div>
+    </div>
+</form>
+
+{% if outings %}
+    <div class="row">
+        {% for outing in outings %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        {% if outing.creator.profile.photo %}
+                            <img src="{{ outing.creator.profile.photo.url }}" class="rounded-circle me-2" width="42" height="42" style="object-fit: cover; border: 2px solid #a855f7;">
+                        {% else %}
+                            <div class="rounded-circle me-2 d-flex align-items-center justify-content-center" style="width:42px;height:42px;background: linear-gradient(135deg, #eab308, #f59e0b);">
+                                <span class="text-white fw-bold">{{ outing.creator.username|first|upper }}</span>
+                            </div>
+                        {% endif %}
+                        <div>
+                            <a href="{% url 'user_profile' outing.creator.id %}" class="text-decoration-none fw-bold" style="color: #ffffff;">
+                                {{ outing.creator.username }}
+                            </a>
+                            <div class="text-muted small">{{ outing.city }}</div>
+                        </div>
+                    </div>
+                    <p class="mb-2">📍 {{ outing.place }}</p>
+                    <p class="mb-2">📅 {{ outing.date }} a las {{ outing.time }}</p>
+                    <p class="mb-3" style="color: #cccccc;">{{ outing.description }}</p>
+                    {% if outing.id in user_interests %}
+                        <a href="{% url 'toggle_interest' outing.id %}" class="btn btn-primary w-100">
+                            ✓ Ya me interesa
+                        </a>
+                    {% else %}
+                        <a href="{% url 'toggle_interest' outing.id %}" class="btn btn-outline-primary w-100">
+                            Me interesa
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-compass text-muted" style="font-size: 56px;"></i>
+        <p class="text-muted mt-3 mb-4">No hay salidas publicadas cerca de ti todavía.</p>
+        <a href="{% url 'create_outing' %}" class="btn btn-primary px-4">Sé el primero en publicar</a>
+    </div>
+{% endif %}
+{% endblock %}

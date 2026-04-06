@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Gente cerca de ti{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Gente cerca de ti</h2>
+
+{% if users %}
+    <div class="row">
+        {% for profile in users %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 p-4 text-center">
+                {% if profile.photo %}
+                    <img src="{{ profile.photo.url }}" class="rounded-circle mx-auto mb-3" width="80" height="80" style="object-fit: cover; border: 3px solid #a855f7;">
+                {% else %}
+                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width:80px;height:80px;background: linear-gradient(135deg, #eab308, #f59e0b);">
+                        <span class="text-white fw-bold" style="font-size:32px;">{{ profile.user.username|first|upper }}</span>
+                    </div>
+                {% endif %}
+                <h5 class="mb-1">{{ profile.user.username }}</h5>
+                <p class="text-muted mb-1">{{ profile.city }}</p>
+                <p class="text-muted mb-3 small">{{ profile.bio|truncatechars:60 }}</p>
+                <div class="d-flex gap-2 justify-content-center">
+                    <a href="{% url 'user_profile' profile.user.id %}" class="btn btn-outline-primary btn-sm">Ver perfil</a>
+                    <a href="{% url 'send_friend_request' profile.user.id %}" class="btn btn-primary btn-sm">Agregar amigo</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="text-center mt-4">
+        <i class="fas fa-user-friends text-muted" style="font-size: 48px;"></i>
+        <p class="text-muted mt-3">No hay usuarios cerca de ti todavía.</p>
+    </div>
+{% endif %}
+
+<div class="text-center mt-4">
+    <a href="{% url 'nearby_users' %}" class="btn btn-primary">Explorar gente cerca</a>
+</div>
+
+{% endblock %}

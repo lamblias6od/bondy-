@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Enviar Solicitud{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <div class="d-flex align-items-center mb-4">
+                {% if receiver.profile.photo %}
+                    <img src="{{ receiver.profile.photo.url }}" class="rounded-circle me-3" width="50" height="50" style="object-fit: cover; border: 2px solid #a855f7;">
+                {% else %}
+                    <div class="rounded-circle me-3 d-flex align-items-center justify-content-center" style="width:50px;height:50px;background: linear-gradient(135deg, #a855f7, #ec4899);">
+                        <span class="text-white fw-bold">{{ receiver.username|first|upper }}</span>
+                    </div>
+                {% endif %}
+                <div>
+                    <h5 class="mb-0">Solicitud para {{ receiver.username }}</h5>
+                    <small class="text-muted">Propón un lugar y fecha</small>
+                </div>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger small mt-1">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary w-100 mt-2">Enviar solicitud</button>
+                <a href="{% url 'nearby_users' %}" class="btn btn-secondary w-100 mt-2">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
