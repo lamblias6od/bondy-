@@ -15,12 +15,13 @@ def home(request):
         return redirect('outings_list')
     return redirect('login')
 
-
 # Standard registration flow using Django's built-in UserCreationForm.
 # On success, the user is logged in automatically and sent to complete their profile.
 def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
+        for field in form.fields.values():
+            field.widget.attrs['class'] = 'form-control'
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -28,8 +29,9 @@ def register_view(request):
             return redirect('profile_edit')
     else:
         form = UserCreationForm()
+        for field in form.fields.values():
+            field.widget.attrs['class'] = 'form-control'
     return render(request, 'usuarios/register.html', {'form': form})
-
 
 # Redirects already authenticated users away from the login page.
 # Bootstrap classes are applied directly to the form widgets here
