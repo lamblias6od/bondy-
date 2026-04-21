@@ -1,6 +1,6 @@
 # Bondy 
 
-A social app for Spanish-speaking people to connect and plan outings together. You can see who's nearby, create open plans ("salidas"), and invite people to join them.
+A social app to connect and plan outings together. You can see who's nearby, create open plans ("salidas"), and invite people to join them.
 
 Live: [bondy.up.railway.app](https://bondy.up.railway.app)
 
