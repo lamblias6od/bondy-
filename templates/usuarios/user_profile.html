@@ -6,16 +6,21 @@
 <div class="row justify-content-center">
     <div class="col-md-5">
         <div class="card p-4 text-center">
+            <!-- Display user photo or avatar with first letter -->
             {% if profile.photo %}
+                <!-- Show existing profile photo -->
                 <img src="{{ profile.photo.url }}" class="rounded-circle mx-auto mb-3" width="120" height="120" style="object-fit: cover; border: 3px solid #a855f7;">
             {% else %}
+                <!-- Generate avatar with first letter of username -->
                 <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width:120px;height:120px;background: linear-gradient(135deg, #eab308, #f59e0b);">
                     <span class="text-white fw-bold" style="font-size:48px;">{{ profile_user.username|first|upper }}</span>
                 </div>
             {% endif %}
+            <!-- User info: username, city, age, availability -->
             <h3 class="mb-1">{{ profile_user.username }}</h3>
             {% if profile %}
                 <p class="text-muted mb-3">🏙️ {{ profile.city }}</p>
+                <!-- Age and availability display -->
                 <div class="d-flex justify-content-center gap-4 mb-3">
                     <div>
                         <div class="fw-bold" style="color: #a855f7;">{{ profile.age }}</div>
@@ -26,25 +31,32 @@
                         <div class="text-muted small">disponibilidad</div>
                     </div>
                 </div>
+                <!-- User bio -->
                 {% if profile.bio %}
                     <p class="mb-3" style="color: #cccccc;">{{ profile.bio }}</p>
                 {% endif %}
+                <!-- User interests badge -->
                 {% if profile.interests %}
                     <div class="mb-3">
                         <span class="badge" style="background: linear-gradient(135deg, #eab308, #f59e0b);">⭐ {{ profile.interests }}</span>
                     </div>
                 {% endif %}
             {% endif %}
+            <!-- Action buttons based on friendship status -->
             <div class="d-flex gap-2 justify-content-center mt-3">
+                <!-- Already friends: show remove friend and message options -->
                 {% if friendship_status == 'accepted' %}
                     <a href="{% url 'remove_friend' profile_user.id %}" class="btn btn-danger">Quitar amigo</a>
                     <a href="{% url 'conversation' profile_user.id %}" class="btn btn-primary">Enviar mensaje</a>
+                <!-- Request sent by current user: show pending status and message option -->
                 {% elif friendship_status == 'pending_sent' %}
                     <span class="btn btn-secondary disabled">Solicitud enviada</span>
                     <a href="{% url 'conversation' profile_user.id %}" class="btn btn-primary">Enviar mensaje</a>
+                <!-- Request received from this user: show accept and message options -->
                 {% elif friendship_status == 'pending_received' %}
                     <a href="{% url 'accept_friend_request' friendship_id %}" class="btn btn-success">Aceptar amistad</a>
                     <a href="{% url 'conversation' profile_user.id %}" class="btn btn-primary">Enviar mensaje</a>
+                <!-- No relationship: show add friend and message options -->
                 {% else %}
                     <a href="{% url 'send_friend_request' profile_user.id %}" class="btn btn-outline-primary">Agregar amigo</a>
                     <a href="{% url 'conversation' profile_user.id %}" class="btn btn-primary">Enviar mensaje</a>

@@ -3,10 +3,15 @@
 {% block title %}Página no encontrada{% endblock %}
 
 {% block content %}
+<!-- 404 error page centered on screen -->
 <div class="text-center mt-5">
+    <!-- Large 404 error code -->
     <h1 style="font-size: 100px;">404</h1>
+    <!-- Error title -->
     <h2>Página no encontrada</h2>
+    <!-- Error description -->
     <p class="text-muted">Lo que buscas no existe o fue eliminado.</p>
+    <!-- Link back to home page -->
     <a href="{% url 'home' %}" class="btn btn-primary mt-3">Volver al inicio</a>
 </div>
 {% endblock %}

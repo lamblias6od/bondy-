@@ -6,23 +6,29 @@
 <div class="row justify-content-center mt-5">
     <div class="col-md-4">
         <div class="card p-4">
+            <!-- Welcome message section -->
             <div class="text-center mb-3">
                 <p class="mb-1" style="color: rgba(255, 255, 255, 0.9); font-size: 1.1rem; font-weight: 500;">Conoce gente, vive experiencias...</p>
                 <p class="text-muted mb-0">Inicia sesión para continuar</p>
             </div>
+            <!-- Login form -->
             <form method="post">
                 {% csrf_token %}
+                <!-- Loop through all form fields and render them -->
                 {% for field in form %}
                     <div class="mb-2">
                         <label class="form-label">{{ field.label }}</label>
                         {{ field }}
+                        <!-- Display validation errors if any -->
                         {% if field.errors %}
                             <div class="text-danger small mt-1">{{ field.errors }}</div>
                         {% endif %}
                     </div>
                 {% endfor %}
+                <!-- Submit button -->
                 <button type="submit" class="btn btn-primary w-100 mt-2">Iniciar sesión</button>
             </form>
+            <!-- Link to registration page -->
             <p class="text-center mt-3 text-muted">¿No tienes cuenta? <a href="{% url 'register' %}">Regístrate</a></p>
         </div>
     </div>

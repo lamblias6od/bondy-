@@ -7,17 +7,21 @@
     <div class="col-md-6">
         <div class="card p-4">
             <h2 class="mb-4">Crear nueva salida</h2>
+            <!-- Form for creating a new outing -->
             <form method="post">
                 {% csrf_token %}
+                <!-- Loop through all form fields and render them -->
                 {% for field in form %}
                     <div class="mb-3">
                         <label class="form-label">{{ field.label }}</label>
                         {{ field }}
+                        <!-- Display validation errors if any -->
                         {% if field.errors %}
                             <div class="text-danger small mt-1">{{ field.errors }}</div>
                         {% endif %}
                     </div>
                 {% endfor %}
+                <!-- Submit and cancel buttons -->
                 <button type="submit" class="btn btn-primary w-100 mt-2">Publicar</button>
                 <a href="{% url 'outings_list' %}" class="btn btn-secondary w-100 mt-2">Cancelar</a>
             </form>

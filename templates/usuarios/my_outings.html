@@ -3,34 +3,45 @@
 {% block title %}Mis Salidas{% endblock %}
 
 {% block content %}
+<!-- Header with title and create button -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Mis Salidas</h2>
     <a href="{% url 'create_outing' %}" class="btn btn-primary">+ Nueva salida</a>
 </div>
 
+<!-- Display list of user's outings if they exist -->
 {% if outings %}
+    <!-- Loop through each outing -->
     {% for outing in outings %}
     <div class="card mb-4 p-4">
+        <!-- Outing title, date/time and status badge -->
         <div class="d-flex justify-content-between align-items-start mb-3">
             <div>
                 <h5 class="mb-1">📍 {{ outing.place }}</h5>
                 <p class="text-muted mb-0">📅 {{ outing.date }} a las {{ outing.time }}</p>
             </div>
+            <!-- Badge showing if outing is active or cancelled -->
             <span class="badge {% if outing.is_active %}bg-success{% else %}bg-secondary{% endif %}">
                 {{ outing.is_active|yesno:'Activa,Cancelada' }}
             </span>
         </div>
+        <!-- Outing description -->
         <p style="color: #cccccc;">{{ outing.description }}</p>
         <hr style="border-color: #2a2a2a;">
+        <!-- List of interested users -->
         <h6 class="mb-3" style="color: #888888;">Interesados ({{ outing.interests.count }})</h6>
         {% if outing.interests.all %}
+            <!-- Display each interested user -->
             <div class="d-flex flex-wrap gap-2 mb-3">
                 {% for interest in outing.interests.all %}
                 <a href="{% url 'user_profile' interest.user.id %}" class="text-decoration-none">
                     <div class="d-flex align-items-center p-2 rounded" style="background-color: #1e1e1e; border: 1px solid #333;">
+                        <!-- Show interested user photo or avatar with first letter -->
                         {% if interest.user.profile.photo %}
+                            <!-- Show existing profile photo -->
                             <img src="{{ interest.user.profile.photo.url }}" class="rounded-circle me-2" width="30" height="30" style="object-fit: cover;">
                         {% else %}
+                            <!-- Generate avatar with first letter of username -->
                             <div class="rounded-circle me-2 d-flex align-items-center justify-content-center" style="width:30px;height:30px;background: linear-gradient(135deg, #eab308, #f59e0b);">
                                 <span class="text-white small fw-bold">{{ interest.user.username|first|upper }}</span>
                             </div>
@@ -41,14 +52,17 @@
                 {% endfor %}
             </div>
         {% else %}
+            <!-- Message when no one is interested -->
             <p class="text-muted">Nadie se ha interesado todavía.</p>
         {% endif %}
+        <!-- Cancel button only shows if outing is active -->
         {% if outing.is_active %}
             <a href="{% url 'cancel_outing' outing.id %}" class="btn btn-danger btn-sm mt-2" style="width: fit-content;">Cancelar salida</a>
         {% endif %}
     </div>
     {% endfor %}
 {% else %}
+    <!-- Display empty state if user has no outings -->
     <div class="text-center mt-5">
         <p class="text-muted">No has publicado ninguna salida todavía.</p>
         <a href="{% url 'create_outing' %}" class="btn btn-primary mt-2">Crear mi primera salida</a>

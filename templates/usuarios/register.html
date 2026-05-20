@@ -6,27 +6,34 @@
 <div class="row justify-content-center mt-5">
     <div class="col-md-4">
         <div class="card p-4">
+            <!-- Registration header with branding -->
             <div class="text-center mb-3">
                 <h2 class="brand-gradient">✦ Bondy</h2>
                 <p class="text-muted mb-0">Conoce gente, vive experiencias...</p>
                 <p class="text-muted small">Crea tu cuenta</p>
             </div>
+            <!-- Registration form -->
             <form method="post">
                 {% csrf_token %}
+                <!-- Loop through all form fields and render them -->
                 {% for field in form %}
                     <div class="mb-2">
                         <label class="form-label">{{ field.label }}</label>
                         {{ field }}
+                        <!-- Display validation errors if any -->
                         {% if field.errors %}
                             <div class="text-danger small mt-1">{{ field.errors }}</div>
                         {% endif %}
+                        <!-- Display field help text (password requirements, etc) -->
                         {% if field.help_text %}
                             <div class="text-muted small mt-1">{{ field.help_text }}</div>
                         {% endif %}
                     </div>
                 {% endfor %}
+                <!-- Submit button -->
                 <button type="submit" class="btn btn-primary w-100 mt-2">Crear cuenta</button>
             </form>
+            <!-- Link to login page for existing users -->
             <p class="text-center mt-3 text-muted">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
         </div>
     </div>

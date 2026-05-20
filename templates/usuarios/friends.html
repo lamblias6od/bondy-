@@ -5,15 +5,20 @@
 {% block content %}
 <h2 class="mb-4">Amigos</h2>
 
+<!-- Display pending friend requests section -->
 {% if pending %}
     <h5 class="mb-3" style="color: #a855f7;">Solicitudes pendientes</h5>
     {% for friendship in pending %}
     <div class="card mb-3 p-3">
         <div class="d-flex align-items-center justify-content-between">
+            <!-- User info: photo + username -->
             <div class="d-flex align-items-center">
+                <!-- Display user photo or avatar with first letter -->
                 {% if friendship.sender.profile.photo %}
+                    <!-- Show existing profile photo -->
                     <img src="{{ friendship.sender.profile.photo.url }}" class="rounded-circle me-3" width="50" height="50" style="object-fit: cover; border: 2px solid #a855f7;">
                 {% else %}
+                    <!-- Generate avatar with first letter of username -->
                     <div class="rounded-circle me-3 d-flex align-items-center justify-content-center" style="width:50px;height:50px;background: linear-gradient(135deg, #eab308, #f59e0b);">
                         <span class="text-white fw-bold">{{ friendship.sender.username|first|upper }}</span>
                     </div>
@@ -23,6 +28,7 @@
                     <small class="text-muted">quiere ser tu amigo</small>
                 </div>
             </div>
+            <!-- Action buttons: accept or reject request -->
             <div class="d-flex gap-2">
                 <a href="{% url 'accept_friend_request' friendship.id %}" class="btn btn-success btn-sm">Aceptar</a>
                 <a href="{% url 'reject_friend_request' friendship.id %}" class="btn btn-danger btn-sm">Rechazar</a>
@@ -33,20 +39,26 @@
     <hr style="border-color: #2a2a2a;">
 {% endif %}
 
+<!-- Display friends list in grid layout -->
 {% if friends_list %}
     <h5 class="mb-3" style="color: #06b6d4;">Mis amigos</h5>
     <div class="row">
+        <!-- Loop through friends and display as cards -->
         {% for friend in friends_list %}
         <div class="col-md-4 mb-4">
             <a href="{% url 'user_profile' friend.id %}" class="text-decoration-none">
                 <div class="card p-3 text-center">
+                    <!-- Display friend photo or avatar with first letter -->
                     {% if friend.profile.photo %}
+                        <!-- Show existing profile photo -->
                         <img src="{{ friend.profile.photo.url }}" class="rounded-circle mx-auto mb-2" width="70" height="70" style="object-fit: cover; border: 2px solid #a855f7;">
                     {% else %}
+                        <!-- Generate avatar with first letter of username -->
                         <div class="rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style="width:70px;height:70px;background: linear-gradient(135deg, #eab308, #f59e0b);">
                             <span class="text-white fw-bold" style="font-size:24px;">{{ friend.username|first|upper }}</span>
                         </div>
                     {% endif %}
+                    <!-- Friend username and city -->
                     <h6 class="mb-0" style="color: #ffffff;">{{ friend.username }}</h6>
                     {% if friend.profile.city %}
                         <small class="text-muted">{{ friend.profile.city }}</small>
@@ -57,12 +69,14 @@
         {% endfor %}
     </div>
 {% else %}
+    <!-- Display empty state if no friends exist -->
     <div class="text-center mt-4">
         <i class="fas fa-user-friends text-muted" style="font-size: 48px;"></i>
         <p class="text-muted mt-3">Aún no tienes amigos. ¡Explora perfiles y envía solicitudes!</p>
     </div>
 {% endif %}
 
+<!-- Link to nearby users page for finding new friends -->
 <div class="text-center mt-4">
     <a href="{% url 'nearby_users' %}" class="btn btn-primary">Explorar gente cerca</a>
 </div>

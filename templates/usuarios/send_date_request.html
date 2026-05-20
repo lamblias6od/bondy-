@@ -6,10 +6,14 @@
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card p-4">
+            <!-- Header with receiver info: photo + username -->
             <div class="d-flex align-items-center mb-4">
+                <!-- Display receiver photo or avatar with first letter -->
                 {% if receiver.profile.photo %}
+                    <!-- Show existing profile photo -->
                     <img src="{{ receiver.profile.photo.url }}" class="rounded-circle me-3" width="50" height="50" style="object-fit: cover; border: 2px solid #a855f7;">
                 {% else %}
+                    <!-- Generate avatar with first letter of username -->
                     <div class="rounded-circle me-3 d-flex align-items-center justify-content-center" style="width:50px;height:50px;background: linear-gradient(135deg, #a855f7, #ec4899);">
                         <span class="text-white fw-bold">{{ receiver.username|first|upper }}</span>
                     </div>
@@ -19,17 +23,21 @@
                     <small class="text-muted">Propón un lugar y fecha</small>
                 </div>
             </div>
+            <!-- Form for sending date request -->
             <form method="post">
                 {% csrf_token %}
+                <!-- Loop through all form fields and render them -->
                 {% for field in form %}
                     <div class="mb-3">
                         <label class="form-label">{{ field.label }}</label>
                         {{ field }}
+                        <!-- Display validation errors if any -->
                         {% if field.errors %}
                             <div class="text-danger small mt-1">{{ field.errors }}</div>
                         {% endif %}
                     </div>
                 {% endfor %}
+                <!-- Submit and cancel buttons -->
                 <button type="submit" class="btn btn-primary w-100 mt-2">Enviar solicitud</button>
                 <a href="{% url 'nearby_users' %}" class="btn btn-secondary w-100 mt-2">Cancelar</a>
             </form>

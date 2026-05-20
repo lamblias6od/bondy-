@@ -6,10 +6,14 @@
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card p-0" style="overflow: hidden;">
+            <!-- Chat header: other user info and back button -->
             <div class="p-3 d-flex align-items-center" style="border-bottom: 1px solid #222222; background: #111111;">
+                <!-- Display other user photo or avatar with first letter -->
                 {% if other_user.profile.photo %}
+                    <!-- Show existing profile photo -->
                     <img src="{{ other_user.profile.photo.url }}" class="rounded-circle me-3" width="42" height="42" style="object-fit: cover; border: 2px solid #a855f7;">
                 {% else %}
+                    <!-- Generate avatar with first letter of username -->
                     <div class="rounded-circle me-3 d-flex align-items-center justify-content-center" style="width:42px;height:42px;background: linear-gradient(135deg, #eab308, #f59e0b);">
                         <span class="text-white fw-bold">{{ other_user.username|first|upper }}</span>
                     </div>
@@ -21,19 +25,25 @@
                 <a href="{% url 'inbox' %}" class="btn btn-secondary btn-sm ms-auto">← Volver</a>
             </div>
 
+            <!-- Messages display area: scrollable container -->
             <div class="p-4" style="height: 450px; overflow-y: auto; background: #0d0d0d;">
                 {% if messages_list %}
+                    <!-- Loop through all messages in conversation -->
                     {% for msg in messages_list %}
                     <div class="d-flex align-items-end {% if msg.sender == request.user %}justify-content-end{% endif %} mb-3">
+                        <!-- Show sender avatar only for incoming messages -->
                         {% if msg.sender != request.user %}
                             {% if msg.sender.profile.photo %}
+                                <!-- Show existing profile photo -->
                                 <img src="{{ msg.sender.profile.photo.url }}" class="rounded-circle me-2" width="30" height="30" style="object-fit: cover;">
                             {% else %}
+                                <!-- Generate avatar with first letter of username -->
                                 <div class="rounded-circle me-2 d-flex align-items-center justify-content-center" style="width:30px;height:30px;background: linear-gradient(135deg, #eab308, #f59e0b); flex-shrink:0;">
                                     <span class="text-white" style="font-size:12px;">{{ msg.sender.username|first|upper }}</span>
                                 </div>
                             {% endif %}
                         {% endif %}
+                        <!-- Message bubble: different color for sent vs received -->
                         <div class="p-3 rounded-3 {% if msg.sender == request.user %}text-white{% else %}text-white{% endif %}" style="max-width: 70%; {% if msg.sender == request.user %}background: #075E54{% else %}background: #1f2c34;{% endif %}">
                             <p class="mb-1" style="color: white;">{{ msg.content }}</p>
                             <small style="opacity: 0.7;">{{ msg.created_at|date:"d/m H:i" }}</small>
@@ -41,12 +51,14 @@
                     </div>
                     {% endfor %}
                 {% else %}
+                    <!-- Display empty state if no messages exist -->
                     <div class="text-center mt-5">
                         <p class="text-muted">Aún no hay mensajes. ¡Inicia la conversación!</p>
                     </div>
                 {% endif %}
             </div>
 
+            <!-- Message input form at bottom -->
             <div class="p-3" style="border-top: 1px solid #222222; background: #111111;">
                 <form method="post">
                     {% csrf_token %}
