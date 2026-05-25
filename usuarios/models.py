@@ -22,29 +22,6 @@ class Profile(models.Model):
         return f'{self.user.username} - {self.city}'
 
 
-# Represents a direct date proposal from one user to another.
-# Kept in the codebase for reference but no longer exposed in the UI —
-# the friend request system replaced this flow.
-class DateRequest(models.Model):
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('accepted', 'Accepted'),
-        ('rejected', 'Rejected'),
-    ]
-
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_requests')
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_requests')
-    proposed_place = models.CharField(max_length=200)
-    proposed_date = models.DateField()
-    proposed_time = models.TimeField()
-    message = models.TextField(blank=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'{self.sender} -> {self.receiver} | {self.status}'
-
-
 # An open plan posted by a user for anyone nearby to discover and join.
 # Uses is_active as a soft delete — cancelled outings stay in the database
 # but are hidden from the public feed.

@@ -6,7 +6,7 @@ from .forms import ProfileForm, OutingForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import models
-from .models import Profile, DateRequest, Outing, Interest, Notification, Message, Friendship
+from .models import Profile, Outing, Interest, Notification, Message, Friendship
 
 
 # Redirect to outings feed if already logged in, otherwise go to login page.
